@@ -1,4 +1,4 @@
-NeuralNetworksGroup
+Neural Networks Group
 ==============================
 
 A project emulating a GCN model which uses EEG data to classify depression in individuals.
