@@ -7,7 +7,7 @@
 PROJECT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 BUCKET = [OPTIONAL] your-bucket-for-syncing-data (do not include 's3://')
 PROFILE = default
-PROJECT_NAME = GCN_EEG
+PROJECT_NAME = GNN_EEG
 PYTHON_INTERPRETER = python3
 
 ifeq (,$(shell which conda))
@@ -38,28 +38,14 @@ clean:
 lint:
 	flake8 src
 
-## Upload Data to S3
-sync_data_to_s3:
-ifeq (default,$(PROFILE))
-	aws s3 sync data/ s3://$(BUCKET)/data/
-else
-	aws s3 sync data/ s3://$(BUCKET)/data/ --profile $(PROFILE)
-endif
-
-## Download Data from S3
-sync_data_from_s3:
-ifeq (default,$(PROFILE))
-	aws s3 sync s3://$(BUCKET)/data/ data/
-else
-	aws s3 sync s3://$(BUCKET)/data/ data/ --profile $(PROFILE)
-endif
-
 ## Set up python interpreter environment
 create_environment:
 ifeq (True,$(HAS_CONDA))
 		@echo ">>> Detected conda, creating conda environment."
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda create --name $(PROJECT_NAME) python=3
+	conda config --set channel_priority strict
+	conda install -n base conda-forge::mamba
+	mamba create --name $(PROJECT_NAME) --file requirements.txt
 else
 	conda create --name $(PROJECT_NAME) python=2.7
 endif
@@ -71,6 +57,9 @@ else
 	@bash -c "source `which virtualenvwrapper.sh`;mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER)"
 	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
 endif
+
+delete_env:
+	conda env remove -n GNN_EEG
 
 ## Test python environment is setup correctly
 test_environment:
