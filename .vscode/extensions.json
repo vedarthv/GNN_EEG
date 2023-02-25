@@ -21,6 +21,7 @@
         "ms-toolsai.jupyter",
         "ms-toolsai.jupyter-renderers",
         "ms-toolsai.vscode-jupyter-cell-tags",
-        "ms-toolsai.jupyter-keymap"
+        "ms-toolsai.jupyter-keymap",
+        "mgesbert.python-path"
     ]
   }
