@@ -3,6 +3,12 @@ Neural Networks Group
 
 A project emulating a GNN model which uses EEG data to classify depression in individuals.
 
+Quick Start Guide
+------------
+>**Pre-requities:** Install `Makefile` on your machine. If you have a windows machine, see https://stackoverflow.com/questions/2532234/how-to-run-a-makefile-in-windows for multiple ways to install `Makefile`. 
+
+After cloning the directory, run `make create_environment` to create a conda environemnt with all the dependancies automatically installed. 
+
 Project Organization
 ------------
 
