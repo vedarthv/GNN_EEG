@@ -2,6 +2,8 @@
 import logging
 import os as os
 from mne.io import read_raw_edf
+from pathlib import Path
+
 
 # Setting the number of files for each type of patient.
 HEALTHY_FILES = 30
@@ -60,9 +62,10 @@ def get_individual_data(index: int, patient_type: str = 'MDD') -> list:
     if index < 1 or (index > 34) or (index > 30 and patient_type == 'H'):
         raise ValueError('Bad index {i} for {patient_type}')
     data_mne = []
-    raw_files = [f'./../../data/raw/{patient_type}S{index}EC.edf',
-                 f'./../../data/raw/{patient_type}S{index}EO.edf',
-                 f'./../../data/raw/{patient_type}S{index}TASK.edf']
+    project_dir = Path(__file__).resolve().parents[2].joinpath('data/raw/')
+    raw_files = [project_dir.joinpath(f'{patient_type}S{index}EC.edf'),
+                 project_dir.joinpath(f'{patient_type}S{index}EO.edf'),
+                 project_dir.joinpath(f'{patient_type}S{index}TASK.edf')]
     for file in raw_files:
         try:
             data_mne.append(read_raw_edf(file, preload=False, infer_types=True, verbose=False))

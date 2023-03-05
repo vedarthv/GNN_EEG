@@ -47,7 +47,10 @@ ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
 	conda install -n base conda-forge::mamba
 	mamba create --name $(PROJECT_NAME) --file environment.yml
 else
-	conda create --name $(PROJECT_NAME) python=2.7
+	conda create --name $(PROJECT_NAME) python=3.10.9
+	conda install -n GNN_EEG conda-forge::mamba
+	conda activate GNN_EEG
+	mamba install -f environment.yml
 endif
 		@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
 else
