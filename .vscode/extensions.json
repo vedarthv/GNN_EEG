@@ -9,7 +9,6 @@
         "076923.python-image-preview",
         "njqdev.vscode-python-typehint",
         "yzhang.markdown-all-in-one",
-        "ms-pyright.pyright",
         "ms-python.vscode-pylance",
         "mhutchie.git-graph",
         "github.vscode-pull-request-github",
@@ -22,6 +21,7 @@
         "ms-toolsai.jupyter-renderers",
         "ms-toolsai.vscode-jupyter-cell-tags",
         "ms-toolsai.jupyter-keymap",
-        "mgesbert.python-path"
+        "mgesbert.python-path",
+        "ms-vscode.makefile-tools"
     ]
   }
