@@ -1,11 +1,8 @@
 name: GNN_EEG
-channels:
-  - conda-forge
-  - defaults
+
 dependencies:
-  - python==3.10.9
+  - python=3.10.9
   - jupyter
-  - mne==1.3.0
+  - mne=1.3.0
   - matplotlib
   - numpy
-  - spektral==1.0

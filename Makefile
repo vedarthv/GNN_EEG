@@ -41,18 +41,10 @@ lint:
 ## Set up python interpreter environment
 create_environment:
 ifeq (True,$(HAS_CONDA))
-		@echo ">>> Detected conda, creating conda environment."
-ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
-	conda config --set channel_priority strict
-	conda install -n base conda-forge::mamba
-	mamba create --name $(PROJECT_NAME) --file environment.yml
-else
-	conda create --name $(PROJECT_NAME) python=3.10.9
-	conda install -n GNN_EEG conda-forge::mamba
-	conda activate GNN_EEG
-	mamba install -f environment.yml
-endif
-		@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
+	@echo ">>> Detected conda, creating conda environment."
+	conda env create --name $(PROJECT_NAME) -f environment.yml
+	conda activate $(PROJECT_NAME)
+	@echo ">>> New conda env created. Activate with:\nsource activate $(PROJECT_NAME)"
 else
 	$(PYTHON_INTERPRETER) -m pip install -q virtualenv virtualenvwrapper
 	@echo ">>> Installing virtualenvwrapper if not already installed.\nMake sure the following lines are in shell startup file\n\
@@ -62,6 +54,7 @@ else
 endif
 
 delete_env:
+	conda activate base
 	conda env remove -n GNN_EEG
 
 ## Test python environment is setup correctly
