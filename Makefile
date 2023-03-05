@@ -26,8 +26,8 @@ requirements: test_environment
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
 
 ## Make Dataset
-data: requirements
-	$(PYTHON_INTERPRETER) src/data/make_dataset.py data/raw data/processed
+data:
+	$(PYTHON_INTERPRETER) src/data/make_dataset.py 
 
 ## Delete all compiled Python files
 clean:
@@ -45,7 +45,7 @@ ifeq (True,$(HAS_CONDA))
 ifeq (3,$(findstring 3,$(PYTHON_INTERPRETER)))
 	conda config --set channel_priority strict
 	conda install -n base conda-forge::mamba
-	mamba create --name $(PROJECT_NAME) --file requirements.txt
+	mamba create --name $(PROJECT_NAME) --file environment.yml
 else
 	conda create --name $(PROJECT_NAME) python=2.7
 endif
