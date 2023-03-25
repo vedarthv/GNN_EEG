@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import itertools
 import logging
 import os as os
 from mne.io import read_raw_edf
@@ -9,7 +10,54 @@ from pathlib import Path
 HEALTHY_FILES = 30
 MDD_FILES = 34
 
+def filter_raw_data(raw):
+    raw = raw.load_data()
+    # dropping un-needed channels
+    raw = raw.drop_channels(raw.ch_names[19:22])
+    # Apply a high-pass filter
+    raw = raw.filter(l_freq=0.5, h_freq=None)
+    # Apply a low-pass filter
+    raw = raw.filter(l_freq=None, h_freq=70)
+    # Apply a notch filter
+    raw = raw.notch_filter(freqs=50)
+    return raw
 
+def __filter_Raw(patient_type: str):
+    data = {}
+    fileAmount = 0
+    if (patient_type == 'MDD'):
+        data = get_raw_MDD_data()
+        fileAmount = MDD_FILES
+    else:
+        data = get_raw_H_data()
+        fileAmount = HEALTHY_FILES
+            
+    for i, k in itertools.product(range(fileAmount), range(3)):
+        try:
+            data[i][0][k] = data[i][0][k].load_data()
+            # dropping un-needed channels
+            data[i][0][k] = data[i][0][k].drop_channels(data[i][0][k].ch_names[19:22])
+            # Apply a high-pass filter
+            data[i][0][k] = data[i][0][k].filter(l_freq=0.5, h_freq=None)
+            # Apply a low-pass filter
+            data[i][0][k] = data[i][0][k].filter(l_freq=None, h_freq=70)
+            # Apply a notch filter
+            data[i][0][k] = data[i][0][k].notch_filter(freqs=50)
+        except FileNotFoundError as exception:
+            print(f"{exception.strerror}")
+            print(f"Paitent {i} is missing file {k}. Skipping")
+            data[i][0][k] = None
+        finally:
+            continue
+
+    return data
+
+def get_filtered_MDD():
+    return __filter_Raw('MDD')
+
+def get_filtered_H():
+    return __filter_Raw('H')
+    
 def get_raw_H_data() -> dict:
     """
     This function generates a dictionary with the raw data for each healthy patient,
