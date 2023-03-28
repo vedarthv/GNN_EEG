@@ -13,7 +13,7 @@ MDD_FILES = 34
 def filter_raw_data(raw):
     raw = raw.load_data()
     # dropping un-needed channels
-    raw = raw.drop_channels(raw.ch_names[19:22])
+    raw = raw.drop_channels(raw.ch_names[19:22])  
     # Apply a high-pass filter
     raw = raw.filter(l_freq=0.5, h_freq=None)
     # Apply a low-pass filter
