@@ -62,7 +62,6 @@ for k in list_im:
         raw_ica = mne.io.RawArray(data=data, info = info)
     
 
-    
     # filtered constructed rawArray objects
     print(f"Now creating filtered_ica copy (RawArray) for file {k}\n")
     filtered_ica = filter_raw_data(raw_ica)
