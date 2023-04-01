@@ -58,6 +58,52 @@ Project Organization
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
+--------
+
+## ICA preprocessing for EEG data
+
+This code outlines how to load in Independent Component Analysis (ICA) objects from `.fif` files and applies them to preprocessed Electroencephalogram (EEG) data. 
+
+To use this code, follow these steps:
+
+1.  Download or clone the repository to your local machine.
+2.  Install the required dependencies, including MNE-Python (a Python package for EEG analysis).
+3.  Ensure that you have already run the `preprocess.py` script to construct the ICA object and preprocessed data and save them to `.fif` files.
+4.  Organize your `.fif` files in a directory and note the format of the file names (e.g., "HS1EC_scaled.fif", "MDDS1EO_ica.fif", "HS9TASK_ica.fif" etc.).
+5.  Modify the `patient_status`, `subject_number`, and `state` variables in the code to match the format of your file names.
+6.  Modify the `data_path` variable to match the path to the directory where your `.fif` files are located.
+7.  Run the code to load the ICA object and preprocessed data, and apply the ICA object to the data.
+8.  Use the resulting processed data for further EEG analysis.
+
+By applying ICA to EEG data, we can effectively remove the sources of noise that can obscure or confound the brain signals of interest. This preprocessing step is critical for obtaining reliable and accurate EEG results. Note that the ICA object and preprocessed data loaded in by this code were both constructed using the `preprocess.py` script.
+
+
+```
+import mne
+
+# Define the patient status, subject number, and state for the files you want to load
+patient_status = 'H'  # or 'MDDS'
+subject_number = 1  # or any other integer
+state = 'EC'  # or 'EO' or 'TASK'
+
+# Define the path to the directory where the files are located
+data_path = '/path/to/data/directory'
+
+# Construct the file names for the processed_data and ica objects
+data_file_name = '{}{}{}_scaled.fif'.format(patient_status, subject_number, state)
+ica_file_name = '{}{}{}_ica.fif'.format(patient_status, subject_number, state)
+
+# Load the ICA object from the appropriate file
+ica = mne.preprocessing.read_ica('{}/{}'.format(data_path, ica_file_name))
+
+# Load the processed data from the appropriate file
+processed_data = mne.io.read_raw('{}/{}'.format(data_path, data_file_name), preload=True)
+```
+
+```
+# apply ICA object to RawArray object to clean data.
+ica.apply(processed_data)
+```
 
 --------
 
