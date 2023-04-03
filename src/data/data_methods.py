@@ -13,7 +13,7 @@ MDD_FILES = 34
 def filter_raw_data(raw):
     raw = raw.load_data()
     # dropping un-needed channels
-    raw = raw.drop_channels(raw.ch_names[19:22])
+    # raw = raw.drop_channels(raw.ch_names[20:22])  # changed from 19:22 to include mastoid reference electrode
     # Apply a high-pass filter
     raw = raw.filter(l_freq=0.5, h_freq=None)
     # Apply a low-pass filter
@@ -36,7 +36,8 @@ def __filter_Raw(patient_type: str):
         try:
             data[i][0][k] = data[i][0][k].load_data()
             # dropping un-needed channels
-            data[i][0][k] = data[i][0][k].drop_channels(data[i][0][k].ch_names[19:22])
+            # I have commented these out as they may include reference channel data
+            # data[i][0][k] = data[i][0][k].drop_channels(data[i][0][k].ch_names[19:22])
             # Apply a high-pass filter
             data[i][0][k] = data[i][0][k].filter(l_freq=0.5, h_freq=None)
             # Apply a low-pass filter
